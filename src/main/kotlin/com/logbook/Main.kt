@@ -1,8 +1,13 @@
 package com.logbook
 
+import com.logbook.model.Flights
 import io.ktor.application.Application
 import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.ContentNegotiation
+import io.ktor.gson.gson
 import io.ktor.http.ContentType
+import io.ktor.response.respond
 import io.ktor.response.respondText
 import io.ktor.routing.get
 import io.ktor.routing.routing
@@ -21,7 +26,13 @@ fun Application.root() {
             call.respondText("Logbook API", ContentType.Text.Plain)
         }
         get("/pilot/{pilotId}/flights") {
-            call.respondText("{ flights: [] }", ContentType.Application.Json)
+            call.respond(Flights(emptyList()))
+        }
+    }
+
+    install(ContentNegotiation) {
+        gson {
+            setPrettyPrinting()
         }
     }
 }

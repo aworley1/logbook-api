@@ -35,6 +35,8 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile "io.ktor:ktor-server-netty:$ktor_version"
     compile "ch.qos.logback:logback-classic:1.2.1"
+    compile "io.ktor:ktor-gson:$ktor_version"
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile "io.ktor:ktor-server-test-host:$ktor_version"
+    testCompile "org.skyscreamer:jsonassert:1.5.0"
 }
