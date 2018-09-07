@@ -10,18 +10,18 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 
 fun main(args: Array<String>) {
-    val server = embeddedServer(Netty, port = 8080, module = Application::firstModule)
+    val server = embeddedServer(Netty, port = 8080, module = Application::root)
     server.start(wait = true)
 
 }
 
-fun Application.firstModule() {
+fun Application.root() {
     routing {
         get("/") {
-            call.respondText("Hello World!", ContentType.Text.Plain)
+            call.respondText("Logbook API", ContentType.Text.Plain)
         }
-        get("/demo") {
-            call.respondText("HELLO WORLD!")
+        get("/pilot/{pilotId}/flights") {
+            call.respondText("{ flights: [] }", ContentType.Application.Json)
         }
     }
 }

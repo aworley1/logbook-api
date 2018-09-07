@@ -1,4 +1,6 @@
-import com.logbook.firstModule
+package functional
+
+import com.logbook.root
 import io.ktor.application.Application
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
@@ -10,10 +12,10 @@ import org.junit.Test
 
 class ApplicationTest {
     @Test
-    fun testRequest() = withTestApplication(Application::firstModule) {
+    fun testRequest() = withTestApplication(Application::root) {
         with(handleRequest(HttpMethod.Get, "/")) {
             assertEquals(HttpStatusCode.OK, response.status())
-            assertEquals("Hello World!", response.content)
+            assertEquals("Logbook API", response.content)
         }
         with(handleRequest(HttpMethod.Get, "/index.html")) {
             assertFalse(requestHandled)
