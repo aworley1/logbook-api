@@ -1,0 +1,50 @@
+swagger: "2.0"
+info:
+  description: "Pilot's logbook API"
+  version: "1.0.0"
+  title: "Logbook API"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "logbook-sample.io"
+basePath: "/api/v1"
+tags:
+- name: "flights"
+  description: "Records of individual flights a pilot has made"
+schemes:
+- "https"
+- "http"
+paths:
+  '/pilot/{pilotId}/flights':
+    get:
+      tags:
+      - "flights"
+      summary: "Get all flights for a pilot"
+      description: ""
+      operationId: "getFlights"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: pilotId
+        in: path
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Flights found and returned"
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Flight'
+        405:
+          description: "Invalid input"
+definitions:
+  Flight:
+    type: "object"
+    required:
+    - "id"
+    properties:
+      id:
+        type: "string"
