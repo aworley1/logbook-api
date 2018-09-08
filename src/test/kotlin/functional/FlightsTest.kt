@@ -1,5 +1,6 @@
 package functional
 
+import com.google.gson.JsonParser
 import com.logbook.model.Flight
 import com.logbook.model.Flights
 import com.logbook.repositories.FlightsRepository
@@ -48,6 +49,20 @@ class FlightsTest {
             assertEquals(HttpStatusCode.OK, response.status())
             JSONAssert.assertEquals(expectedResponse, response.content, true)
             assertEquals(ContentType.Application.Json.withCharset(Charset.forName("UTF-8")), response.contentType())
+        }
+    }
+
+    @Test
+    fun `should store a new flight in the repository and allocate an id`(): Unit = withTestApplication(Application::root) {
+        handleRequest(HttpMethod.Post, "/pilots/12345/flights") {
+
+        }.apply {
+            assertEquals(HttpStatusCode.Created, response.status())
+
+            val idFromResponse = JsonParser().parse(response.content).asJsonObject["id"].asString
+            assertEquals(36, idFromResponse.length)
+
+            assertEquals(idFromResponse, FlightsRepository.flights.flights[0].id)
         }
     }
 
