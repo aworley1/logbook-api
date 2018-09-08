@@ -15,7 +15,7 @@ schemes:
 - "https"
 - "http"
 paths:
-  '/pilot/{pilotId}/flights':
+  '/pilots/{pilotId}/flights':
     get:
       tags:
       - "flights"
@@ -39,8 +39,31 @@ paths:
             properties:
               flights:
                 $ref: '#/definitions/Flights'
-        405:
-          description: "Invalid input"
+    post:
+      tags:
+      - "flights"
+      summary: "Create a flight for a pilot"
+      description: ""
+      operationId: "createFlight"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: pilotId
+        in: path
+        required: true
+        type: string
+      responses:
+        201:
+          description: "Flight created"
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: "Flight id"
+                example: "17865bcb-a1e5-4b25-aae9-3a4293ef2b3a"
 definitions:
   Flight:
     type: "object"

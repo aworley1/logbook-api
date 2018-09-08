@@ -25,7 +25,7 @@ fun Application.root() {
         get("/") {
             call.respondText("Logbook API", ContentType.Text.Plain)
         }
-        get("/pilot/{pilotId}/flights") {
+        get("/pilots/{pilotId}/flights") {
             call.respond(Flights(emptyList()))
         }
     }

@@ -17,7 +17,7 @@ import java.nio.charset.Charset
 class FlightsTest {
     @Test
     fun `should return empty list of flights`() = withTestApplication(Application::root) {
-        with(handleRequest(HttpMethod.Get, "/pilot/12345/flights")) {
+        with(handleRequest(HttpMethod.Get, "/pilots/12345/flights")) {
             val expectedResponse = "{ flights: [] }"
 
             assertEquals(HttpStatusCode.OK, response.status())
