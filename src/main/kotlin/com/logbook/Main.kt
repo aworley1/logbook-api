@@ -1,6 +1,6 @@
 package com.logbook
 
-import com.logbook.model.Flights
+import com.logbook.repositories.FlightsRepository
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -26,7 +26,7 @@ fun Application.root() {
             call.respondText("Logbook API", ContentType.Text.Plain)
         }
         get("/pilots/{pilotId}/flights") {
-            call.respond(Flights(emptyList()))
+            call.respond(FlightsRepository.get())
         }
     }
 
