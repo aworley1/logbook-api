@@ -1,9 +1,10 @@
 package functional
 
 import com.google.gson.JsonParser
+import com.logbook.koin_modules.stubRepositories
 import com.logbook.model.Flight
 import com.logbook.model.Flights
-import com.logbook.repositories.FlightsRepository
+import com.logbook.repositories.StubFlightsRepository
 import com.logbook.root
 import io.ktor.application.Application
 import io.ktor.http.ContentType
@@ -14,15 +15,24 @@ import io.ktor.server.testing.contentType
 import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.withTestApplication
 import junit.framework.Assert.assertEquals
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.koin.standalone.StandAloneContext.closeKoin
+import org.koin.standalone.StandAloneContext.startKoin
 import org.skyscreamer.jsonassert.JSONAssert
 import java.nio.charset.Charset
 
 class FlightsTest {
     @Before
     fun setup() {
-        FlightsRepository.clear()
+        startKoin(listOf(stubRepositories))
+        StubFlightsRepository.clear()
+    }
+
+    @After
+    fun tearDown() {
+        closeKoin()
     }
 
     @Test
@@ -39,7 +49,7 @@ class FlightsTest {
     @Test
     fun `should return all flights for a pilot`() = withTestApplication(Application::root) {
         //given
-        FlightsRepository.flights = Flights(listOf(Flight("abcde"), Flight("defghi")))
+        StubFlightsRepository.flights = Flights(listOf(Flight("abcde"), Flight("defghi")))
 
         //when
         with(handleRequest(HttpMethod.Get, "/pilots/12345/flights")) {
@@ -62,7 +72,7 @@ class FlightsTest {
             val idFromResponse = JsonParser().parse(response.content).asJsonObject["id"].asString
             assertEquals(36, idFromResponse.length)
 
-            assertEquals(idFromResponse, FlightsRepository.flights.flights[0].id)
+            assertEquals(idFromResponse, StubFlightsRepository.flights.flights[0].id)
         }
     }
 

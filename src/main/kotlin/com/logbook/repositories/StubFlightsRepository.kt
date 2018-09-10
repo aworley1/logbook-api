@@ -4,12 +4,18 @@ import com.logbook.model.Flight
 import com.logbook.model.Flights
 import java.util.UUID
 
-object FlightsRepository {
+
+interface FlightsRepository {
+    fun get(): Flights
+    fun create(): String
+}
+
+object StubFlightsRepository : FlightsRepository {
     var flights = Flights(emptyList())
 
-    fun get() = flights
+    override fun get() = flights
 
-    fun create(): String {
+    override fun create(): String {
         val id = UUID.randomUUID().toString()
         flights = Flights(flights.flights + Flight(id))
         return id
