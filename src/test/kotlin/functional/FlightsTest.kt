@@ -20,6 +20,7 @@ import org.junit.Before
 import org.junit.Test
 import org.koin.standalone.StandAloneContext.closeKoin
 import org.koin.standalone.StandAloneContext.startKoin
+import org.koin.standalone.StandAloneContext.stopKoin
 import org.skyscreamer.jsonassert.JSONAssert
 import java.nio.charset.Charset
 
@@ -32,7 +33,7 @@ class FlightsTest {
 
     @After
     fun tearDown() {
-        closeKoin()
+        stopKoin()
     }
 
     @Test
