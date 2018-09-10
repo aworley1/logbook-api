@@ -15,17 +15,17 @@ import io.ktor.response.respondText
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.routing
+import io.ktor.server.engine.commandLineEnvironment
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import org.koin.ktor.ext.inject
 import org.koin.standalone.StandAloneContext.startKoin
 
 fun main(args: Array<String>) {
+    // Start Koin
     startKoin(listOf(stubRepositories))
-
-    val server = embeddedServer(Netty, port = 8080, module = Application::root)
-    server.start(wait = true)
-
+    // Start Ktor
+    embeddedServer(Netty, commandLineEnvironment(args)).start()
 }
 
 fun Application.root() {
