@@ -18,17 +18,20 @@ import junit.framework.Assert.assertEquals
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.koin.standalone.StandAloneContext.closeKoin
 import org.koin.standalone.StandAloneContext.startKoin
 import org.koin.standalone.StandAloneContext.stopKoin
+import org.koin.standalone.inject
+import org.koin.test.KoinTest
 import org.skyscreamer.jsonassert.JSONAssert
 import java.nio.charset.Charset
 
-class FlightsTest {
+class FlightsTest: KoinTest {
+    val stubFlightsRepository: StubFlightsRepository by inject()
+
     @Before
     fun setup() {
         startKoin(listOf(stubRepositories))
-        StubFlightsRepository.clear()
+        stubFlightsRepository.clear()
     }
 
     @After
@@ -50,7 +53,7 @@ class FlightsTest {
     @Test
     fun `should return all flights for a pilot`() = withTestApplication(Application::root) {
         //given
-        StubFlightsRepository.flights = Flights(listOf(Flight("abcde"), Flight("defghi")))
+        stubFlightsRepository.flights = Flights(listOf(Flight("abcde"), Flight("defghi")))
 
         //when
         with(handleRequest(HttpMethod.Get, "/pilots/12345/flights")) {
@@ -73,7 +76,7 @@ class FlightsTest {
             val idFromResponse = JsonParser().parse(response.content).asJsonObject["id"].asString
             assertEquals(36, idFromResponse.length)
 
-            assertEquals(idFromResponse, StubFlightsRepository.flights.flights[0].id)
+            assertEquals(idFromResponse, stubFlightsRepository.flights.flights[0].id)
         }
     }
 

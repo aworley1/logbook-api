@@ -10,7 +10,7 @@ interface FlightsRepository {
     fun create(): String
 }
 
-object StubFlightsRepository : FlightsRepository {
+class StubFlightsRepository : FlightsRepository {
     var flights = Flights(emptyList())
 
     override fun get() = flights

@@ -5,5 +5,5 @@ import com.logbook.repositories.StubFlightsRepository
 import org.koin.dsl.module.module
 
 val stubRepositories = module {
-    single<FlightsRepository> { StubFlightsRepository }
+    single<StubFlightsRepository> { StubFlightsRepository() } bind FlightsRepository::class
 }
