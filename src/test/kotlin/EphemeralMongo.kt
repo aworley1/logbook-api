@@ -16,5 +16,6 @@ object EphemeralMongo {
 
     fun stopProcess() {
         process?.destroyForcibly()
+        process = null
     }
 }

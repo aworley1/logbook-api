@@ -11,6 +11,7 @@ class StubFlightsRepository : FlightsRepository {
     override fun get() = flights
 
     override fun create(): String {
+        //TODO generating this ID should be abstracted to a level above this class
         val id = UUID.randomUUID().toString()
         flights = Flights(flights.flights + Flight(id))
         return id
