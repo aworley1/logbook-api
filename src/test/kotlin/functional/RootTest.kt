@@ -1,6 +1,6 @@
 package functional
 
-import com.logbook.root
+import com.logbook.ktor_modules.root
 import io.ktor.application.Application
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
@@ -10,7 +10,7 @@ import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertFalse
 import org.junit.Test
 
-class ApplicationTest {
+class RootTest {
     @Test
     fun testRequest() = withTestApplication(Application::root) {
         with(handleRequest(HttpMethod.Get, "/")) {
