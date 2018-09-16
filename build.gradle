@@ -17,6 +17,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
+apply plugin: 'groovy'
 apply plugin: 'application'
 apply plugin: 'com.github.johnrengelman.shadow'
 
@@ -40,6 +41,10 @@ dependencies {
     compile "ch.qos.logback:logback-classic:1.2.1"
     compile "io.ktor:ktor-gson:$ktor_version"
     compile 'org.koin:koin-ktor:1.0.0-RC-2'
+    compile "org.codehaus.groovy:groovy-all:2.4.15"
+    compile 'org.litote.kmongo:kmongo:3.8.2'
+    testCompile 'org.litote.kmongo:kmongo-fongo:3.8.2'
+    testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile "io.ktor:ktor-server-test-host:$ktor_version"
     testCompile "org.skyscreamer:jsonassert:1.5.0"

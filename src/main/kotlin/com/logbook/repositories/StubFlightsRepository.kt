@@ -5,11 +5,6 @@ import com.logbook.model.Flights
 import java.util.UUID
 
 
-interface FlightsRepository {
-    fun get(): Flights
-    fun create(): String
-}
-
 class StubFlightsRepository : FlightsRepository {
     var flights = Flights(emptyList())
 
