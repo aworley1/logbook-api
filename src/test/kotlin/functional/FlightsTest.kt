@@ -53,12 +53,16 @@ class FlightsTest : KoinTest {
     @Test
     fun `should return all flights for a pilot`() = withTestApplication(Application::pilots) {
         //given
-        stubFlightsRepository.flights = Flights(listOf(Flight("abcde"), Flight("defghi")))
+        stubFlightsRepository.flights = Flights(listOf(
+                Flight("abcde", "12345"),
+                Flight("defghi", "12345"),
+                Flight("hijkl", "67890")
+        ))
 
         //when
         with(handleRequest(HttpMethod.Get, "/pilots/12345/flights")) {
             //then
-            val expectedResponse = """{ flights: [{id: "abcde"}, {id: "defghi"}] }"""
+            val expectedResponse = """{ flights: [{id: "abcde", pilotId: "12345"}, {id: "defghi", pilotId: "12345"}] }"""
 
             assertEquals(HttpStatusCode.OK, response.status())
             JSONAssert.assertEquals(expectedResponse, response.content, true)
@@ -68,17 +72,17 @@ class FlightsTest : KoinTest {
 
     @Test
     fun `should store a new flight in the repository and allocate an id`(): Unit = withTestApplication(Application::pilots) {
+        //when
         handleRequest(HttpMethod.Post, "/pilots/12345/flights") {
-
         }.apply {
+            //then
             assertEquals(HttpStatusCode.Created, response.status())
 
             val idFromResponse = JsonParser().parse(response.content).asJsonObject["id"].asString
-            assertEquals(36, idFromResponse.length)
 
+            assertEquals(36, idFromResponse.length)
             assertEquals(idFromResponse, stubFlightsRepository.flights.flights[0].id)
+            assertEquals("12345", stubFlightsRepository.flights.flights[0].pilotId)
         }
     }
-
-
 }

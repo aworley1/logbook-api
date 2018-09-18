@@ -28,13 +28,14 @@ class DefaultFlightsRepositoryTest {
     }
 
     @Test
-    fun `should get a flight from database`() {
+    fun `should get a flight for a pilot from database`() {
         //given
         val flightsCollection = database.getCollection<Flight>()
-        flightsCollection.insertOne(Flight("id1"))
+        flightsCollection.insertOne(Flight("id1", "abcdef"))
+        flightsCollection.insertOne(Flight("id2", "hijklm"))
 
         //when
-        val result = defaultFlightsRepository.get()
+        val result = defaultFlightsRepository.get("abcdef")
 
         //then
         assertEquals(1, result.flights.size)
@@ -43,11 +44,13 @@ class DefaultFlightsRepositoryTest {
     @Test
     fun `should create a flight and assign an id to it`() {
         //when
-        val returnedId = defaultFlightsRepository.create()
+        val returnedId = defaultFlightsRepository.create("pilotId")
 
         //then
         assertEquals(36, returnedId.length)
-        database.getCollection<Flight>().findOne()?.id == returnedId
+        val databaseResult = database.getCollection<Flight>().findOne()
+        assertEquals(returnedId, databaseResult?.id)
+        assertEquals("pilotId", databaseResult?.pilotId)
     }
 
 }

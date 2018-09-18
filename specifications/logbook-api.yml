@@ -69,8 +69,11 @@ definitions:
     type: "object"
     required:
     - "id"
+    - "pilotId"
     properties:
       id:
+        type: "string"
+      pilotId:
         type: "string"
   Flights:
     type: array

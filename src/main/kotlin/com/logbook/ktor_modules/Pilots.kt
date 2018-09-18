@@ -19,10 +19,12 @@ fun Application.pilots() {
 
     routing {
         get("/pilots/{pilotId}/flights") {
-            call.respond(flightsRepository.get())
+            val pilotId = call.parameters["pilotId"]!!
+            call.respond(flightsRepository.get(pilotId))
         }
         post("/pilots/{pilotId}/flights") {
-            call.respond(status = HttpStatusCode.Created, message = FlightCreatedResponse(flightsRepository.create()))
+            val pilotId = call.parameters["pilotId"]!!
+            call.respond(status = HttpStatusCode.Created, message = FlightCreatedResponse(flightsRepository.create(pilotId)))
         }
     }
 
