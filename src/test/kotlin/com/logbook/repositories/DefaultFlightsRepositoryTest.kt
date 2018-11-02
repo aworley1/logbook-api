@@ -9,6 +9,7 @@ import org.junit.Test
 import org.litote.kmongo.KMongo
 import org.litote.kmongo.findOne
 import org.litote.kmongo.getCollection
+import test_helpers.createFlight
 import kotlin.test.assertEquals
 
 class DefaultFlightsRepositoryTest {
@@ -30,9 +31,11 @@ class DefaultFlightsRepositoryTest {
     @Test
     fun `should get a flight for a pilot from database`() {
         //given
+        val flight1 = createFlight(id ="id1", pilotId = "abcdef")
+        val flight2 = createFlight(id ="id2", pilotId = "hijklm")
         val flightsCollection = database.getCollection<Flight>()
-        flightsCollection.insertOne(Flight("id1", "abcdef"))
-        flightsCollection.insertOne(Flight("id2", "hijklm"))
+        flightsCollection.insertOne(flight1)
+        flightsCollection.insertOne(flight2)
 
         //when
         val result = defaultFlightsRepository.get("abcdef")

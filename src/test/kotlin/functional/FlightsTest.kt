@@ -3,7 +3,6 @@ package functional
 import com.google.gson.JsonParser
 import com.logbook.koin_modules.stubRepositories
 import com.logbook.ktor_modules.pilots
-import com.logbook.model.Flight
 import com.logbook.model.Flights
 import com.logbook.repositories.StubFlightsRepository
 import io.ktor.application.Application
@@ -23,6 +22,7 @@ import org.koin.standalone.StandAloneContext.stopKoin
 import org.koin.standalone.inject
 import org.koin.test.KoinTest
 import org.skyscreamer.jsonassert.JSONAssert
+import test_helpers.createFlight
 import java.nio.charset.Charset
 
 class FlightsTest : KoinTest {
@@ -53,11 +53,10 @@ class FlightsTest : KoinTest {
     @Test
     fun `should return all flights for a pilot`() = withTestApplication(Application::pilots) {
         //given
-        stubFlightsRepository.flights = Flights(listOf(
-                Flight("abcde", "12345"),
-                Flight("defghi", "12345"),
-                Flight("hijkl", "67890")
-        ))
+        val flight1 = createFlight(id = "abcde", pilotId = "12345")
+        val flight2 = createFlight(id = "defghi", pilotId = "12345")
+        val flight3 = createFlight(id = "hijkl", pilotId = "67890")
+        stubFlightsRepository.flights = Flights(listOf(flight1, flight2, flight3))
 
         //when
         with(handleRequest(HttpMethod.Get, "/pilots/12345/flights")) {
