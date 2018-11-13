@@ -14,7 +14,6 @@ object EphemeralMongo {
         pb.command("/usr/bin/mongod", "--dbpath", "/tmp/$uuid", "--storageEngine", "ephemeralForTest", "--port", "37017")
         try {
             process = pb.start()
-            println(process!!.isAlive)
         } catch (e: Exception) {
             e.printStackTrace()
         }

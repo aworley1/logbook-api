@@ -10,6 +10,7 @@ import org.litote.kmongo.KMongo
 import org.litote.kmongo.findOne
 import org.litote.kmongo.getCollection
 import test_helpers.createFlight
+import java.time.Instant
 import kotlin.test.assertEquals
 
 class DefaultFlightsRepositoryTest {
@@ -47,13 +48,14 @@ class DefaultFlightsRepositoryTest {
     @Test
     fun `should create a flight and assign an id to it`() {
         //when
-        val returnedId = defaultFlightsRepository.create("pilotId")
+        val returnedId = defaultFlightsRepository.create("pilotId", Instant.parse("2000-12-25T09:00:00Z"))
 
         //then
         assertEquals(36, returnedId.length)
         val databaseResult = database.getCollection<Flight>().findOne()
         assertEquals(returnedId, databaseResult?.id)
         assertEquals("pilotId", databaseResult?.pilotId)
+        assertEquals(Instant.parse("2000-12-25T09:00:00Z"), databaseResult?.departureInstant)
     }
 
 }
