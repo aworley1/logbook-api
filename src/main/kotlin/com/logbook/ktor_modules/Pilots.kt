@@ -6,6 +6,7 @@ import com.logbook.repositories.FlightsRepository
 import com.logbook.type_adapters.InstantDeserializer
 import com.logbook.type_adapters.InstantSerializer
 import io.ktor.application.Application
+import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.features.ContentNegotiation
@@ -32,7 +33,16 @@ fun Application.pilots() {
             val request = call.receive<CreateFlightRequest>()
             val departureInstant = request.departureInstant
             val arrivalInstant = request.arrivalInstant
-            call.respond(status = HttpStatusCode.Created, message = FlightCreatedResponse(flightsRepository.create(pilotId, Instant.parse(departureInstant), Instant.parse(arrivalInstant))))
+            call.respond(
+                    status = HttpStatusCode.Created,
+                    message = FlightCreatedResponse(
+                            id = flightsRepository.create(
+                                    pilotId = pilotId,
+                                    departureInstant = Instant.parse(departureInstant),
+                                    arrivalInstant = Instant.parse(arrivalInstant)
+                            )
+                    )
+            )
         }
     }
 
