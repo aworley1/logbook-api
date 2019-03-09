@@ -48,7 +48,11 @@ class DefaultFlightsRepositoryTest {
     @Test
     fun `should create a flight and assign an id to it`() {
         //when
-        val returnedId = defaultFlightsRepository.create("pilotId", Instant.parse("2000-12-25T09:00:00Z"))
+        val returnedId = defaultFlightsRepository.create(
+                pilotId = "pilotId",
+                departureInstant = Instant.parse("2000-12-25T09:00:00Z"),
+                arrivalInstant = Instant.parse("2000-12-25T19:00:00Z")
+        )
 
         //then
         assertEquals(36, returnedId.length)
@@ -56,6 +60,7 @@ class DefaultFlightsRepositoryTest {
         assertEquals(returnedId, databaseResult?.id)
         assertEquals("pilotId", databaseResult?.pilotId)
         assertEquals(Instant.parse("2000-12-25T09:00:00Z"), databaseResult?.departureInstant)
+        assertEquals(Instant.parse("2000-12-25T19:00:00Z"), databaseResult?.arrivalInstant)
     }
 
 }

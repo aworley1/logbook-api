@@ -6,5 +6,11 @@ import java.time.Instant
 fun createFlight(
         id: String = "defaultFlightId",
         pilotId: String = "defaultPilotId",
-        departureInstant: Instant = Instant.parse("1970-04-27T00:00:00Z")
-) = Flight(id = id, pilotId = pilotId, departureInstant = departureInstant)
+        departureInstant: Instant = Instant.parse("1970-04-27T00:00:00Z"),
+        arrivalInstant: Instant = Instant.parse("1970-04-27T00:00:00Z")
+) = Flight(
+        id = id,
+        pilotId = pilotId,
+        departureInstant = departureInstant,
+        arrivalInstant = arrivalInstant
+)

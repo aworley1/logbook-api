@@ -56,15 +56,29 @@ class FlightsTest : KoinTest {
     @Test
     fun `should return all flights for a pilot`() = withTestApplication(Application::pilots) {
         //given
-        val flight1 = createFlight(id = "abcde", pilotId = "12345", departureInstant = Instant.parse("2018-01-01T00:00:00Z"))
-        val flight2 = createFlight(id = "defghi", pilotId = "12345", departureInstant = Instant.parse("2018-01-01T19:00:00Z"))
+        val flight1 = createFlight(
+                id = "abcde",
+                pilotId = "12345",
+                departureInstant = Instant.parse("2018-01-01T00:00:00Z"),
+                arrivalInstant = Instant.parse("2018-01-02T12:00:00Z")
+        )
+        val flight2 = createFlight(
+                id = "defghi",
+                pilotId = "12345",
+                departureInstant = Instant.parse("2018-01-01T19:00:00Z"),
+                arrivalInstant = Instant.parse("2018-01-01T21:00:00Z")
+        )
         val flight3 = createFlight(id = "hijkl", pilotId = "67890")
         stubFlightsRepository.flights = Flights(listOf(flight1, flight2, flight3))
 
         //when
         with(handleRequest(HttpMethod.Get, "/pilots/12345/flights")) {
             //then
-            val expectedResponse = """{ flights: [{id: "abcde", pilotId: "12345", departureInstant: "2018-01-01T00:00:00Z"}, {id: "defghi", pilotId: "12345", departureInstant: "2018-01-01T19:00:00Z"}] }"""
+            val expectedResponse = """
+                { flights:
+                [{id: "abcde", pilotId: "12345", departureInstant: "2018-01-01T00:00:00Z", arrivalInstant: "2018-01-02T12:00:00Z"},
+                {id: "defghi", pilotId: "12345", departureInstant: "2018-01-01T19:00:00Z", arrivalInstant: "2018-01-01T21:00:00Z"}]
+                }""".trimMargin()
 
             assertEquals(HttpStatusCode.OK, response.status())
             JSONAssert.assertEquals(expectedResponse, response.content, true)
@@ -77,7 +91,7 @@ class FlightsTest : KoinTest {
         //when
         handleRequest(HttpMethod.Post, "/pilots/12345/flights") {
             addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-            setBody("""{departureInstant: "2018-01-01T14:00:00Z"} """)
+            setBody("""{departureInstant: "2018-01-01T14:00:00Z", arrivalInstant: "2018-01-01T18:00:00Z"} """)
         }.apply {
             //then
             assertEquals(HttpStatusCode.Created, response.status())
@@ -88,6 +102,7 @@ class FlightsTest : KoinTest {
             assertEquals(idFromResponse, stubFlightsRepository.flights.flights[0].id)
             assertEquals("12345", stubFlightsRepository.flights.flights[0].pilotId)
             assertEquals(Instant.parse("2018-01-01T14:00:00Z"), stubFlightsRepository.flights.flights[0].departureInstant)
+            assertEquals(Instant.parse("2018-01-01T18:00:00Z"), stubFlightsRepository.flights.flights[0].arrivalInstant)
         }
     }
 }

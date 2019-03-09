@@ -5,5 +5,5 @@ import java.time.Instant
 
 interface FlightsRepository {
     fun get(pilotId: String): Flights
-    fun create(pilotId: String, departureInstant: Instant): String
+    fun create(pilotId: String, departureInstant: Instant, arrivalInstant: Instant): String
 }

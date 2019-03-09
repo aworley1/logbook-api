@@ -29,8 +29,10 @@ fun Application.pilots() {
         }
         post("/pilots/{pilotId}/flights") {
             val pilotId = call.parameters["pilotId"]!!
-            val departureInstant = call.receive<CreateFlightRequest>().departureInstant
-            call.respond(status = HttpStatusCode.Created, message = FlightCreatedResponse(flightsRepository.create(pilotId, Instant.parse(departureInstant))))
+            val request = call.receive<CreateFlightRequest>()
+            val departureInstant = request.departureInstant
+            val arrivalInstant = request.arrivalInstant
+            call.respond(status = HttpStatusCode.Created, message = FlightCreatedResponse(flightsRepository.create(pilotId, Instant.parse(departureInstant), Instant.parse(arrivalInstant))))
         }
     }
 

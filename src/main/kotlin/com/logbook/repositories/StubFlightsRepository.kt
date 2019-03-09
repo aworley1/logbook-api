@@ -13,10 +13,10 @@ class StubFlightsRepository : FlightsRepository {
             flights = flights.flights.filter { it.pilotId == pilotId }
     )
 
-    override fun create(pilotId: String, departureInstant: Instant): String {
+    override fun create(pilotId: String, departureInstant: Instant, arrivalInstant: Instant): String {
         //TODO generating this ID should be abstracted to a level above this class
         val id = UUID.randomUUID().toString()
-        flights = Flights(flights.flights + Flight(id, pilotId, departureInstant))
+        flights = Flights(flights.flights + Flight(id, pilotId, departureInstant, arrivalInstant))
         return id
     }
 

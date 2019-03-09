@@ -15,10 +15,10 @@ class DefaultFlightsRepository(database: MongoDatabase) : FlightsRepository {
         return Flights(flightsCollection.find(Flight::pilotId eq pilotId).asSequence().toList())
     }
 
-    override fun create(pilotId: String, departureInstant: Instant): String {
+    override fun create(pilotId: String, departureInstant: Instant, arrivalInstant: Instant): String {
         //TODO generating this ID should be abstracted to a level above this class
         val id = UUID.randomUUID().toString()
-        flightsCollection.insertOne(Flight(id, pilotId, departureInstant))
+        flightsCollection.insertOne(Flight(id, pilotId, departureInstant, arrivalInstant))
         return id
     }
 }
